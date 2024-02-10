@@ -6,7 +6,7 @@
 /*   By: eshintan <eshintan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 04:37:21 by emma              #+#    #+#             */
-/*   Updated: 2024/02/11 05:33:14 by eshintan         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:56:10 by eshintan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 char	*get_next_line(int fd)
 {
+	static char	*save[OPEN_MAX];
 	char		*list;
-	static char	*save;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	save = ft_read(fd, save);
-	if (save == NULL)
+	save[fd] = ft_read(fd, save[fd]);
+	if (save[fd] == NULL)
 		return (NULL);
-	list = ft_outputline(save);
+	list = ft_outputline(save[fd]);
 	if (list == NULL)
 		return (NULL);
-	save = ft_leftover(save);
-	if (save == NULL && list[0] == '\0')
+	save[fd] = ft_leftover(save[fd]);
+	if (save[fd] == NULL && list[0] == '\0')
 	{
 		free(list);
 		return (NULL);
